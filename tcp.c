@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -117,6 +118,8 @@ int tcp_connect(struct addrinfo *ai,
 	    close(sock);
 	    continue;
 	}
+        opt = 1;
+        setsockopt(sock,IPPROTO_TCP,TCP_NODELAY,&opt,sizeof(opt));
 	if (tcp_verbose)
 	    fprintf(stderr,"%s %s [%s] %s open\n",
 		    strfamily(e->ai_family),e->ai_canonname,uhost,userv);
